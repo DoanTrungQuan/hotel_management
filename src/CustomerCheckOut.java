@@ -1,5 +1,5 @@
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.ResultSetMetaData;
 import java.beans.Statement;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -47,7 +47,7 @@ double pri;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("Select * from customer where status=?");
             pst.setString(1, "NULL");
             rs = pst.executeQuery();
@@ -302,7 +302,7 @@ double pri;
         ResultSet rs = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+            java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("select name,mobile,email,date,price from customer where roomnumber=? AND status=?");
             pst.setString(1, txtroomnumber.getText().trim());
             pst.setString(2, "NULL");
@@ -409,7 +409,7 @@ double pri;
             try {
                 PreparedStatement pst = null;
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+                java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
                 pst = con.prepareStatement("update customer set status=? where roomnumber=?");
                 pst.setString(1, "check out");
                 pst.setString(2, txtroomnumber.getText());

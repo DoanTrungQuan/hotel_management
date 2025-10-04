@@ -1,5 +1,5 @@
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,7 +37,7 @@ public class ManageRoom extends javax.swing.JFrame {
     Connection con=null; 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("Select * from room");
             rs=pst.executeQuery();
             ResultSetMetaData stData=(ResultSetMetaData) rs.getMetaData();
@@ -225,7 +225,7 @@ dispose();
         ResultSet rs=null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
            // st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             pst=con.prepareStatement("select * from room where roomnumber=?");
             pst.setString(1, txtno.getText());
@@ -239,7 +239,7 @@ dispose();
                        
                         try {
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+                        con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
                         pst=con.prepareStatement("insert into room(roomnumber,roomtype,bed,price,status)values(?,?,?,?,?)");
                         pst.setString(1, txtno.getText());
                         pst.setString(2, jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));

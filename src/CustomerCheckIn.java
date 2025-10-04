@@ -29,7 +29,7 @@ public class CustomerCheckIn extends javax.swing.JFrame {
         ResultSet rs;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             //st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             pst=con.prepareStatement("select roomnumber from room where status=? AND roomtype=? AND bed=?");
             pst.setString(1,"Not Booked");
@@ -216,6 +216,11 @@ public class CustomerCheckIn extends javax.swing.JFrame {
                 txtadharFocusLost(evt);
             }
         });
+        txtadhar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtadharActionPerformed(evt);
+            }
+        });
         txtadhar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtadharKeyPressed(evt);
@@ -397,7 +402,7 @@ if(comboroomnumber.getItemCount()==0)
             ResultSet rs;
             try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("select price from room where roomnumber=?");
             pst.setString(1,comboroomnumber.getItemAt(comboroomnumber.getSelectedIndex()));
             rs=pst.executeQuery();
@@ -452,7 +457,7 @@ if(comboroomnumber.getItemCount()==0)
             PreparedStatement pst;
             ResultSet rs;
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("insert into customer(name,mobile,email,gender,address,id,nationality,date,roomnumber,bed,roomtype,price,status)values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
             pst.setString(1, txtname.getText());
             pst.setString(2, txtmob.getText());
@@ -521,7 +526,7 @@ if(comboroomnumber.getItemCount()==0)
         ResultSet rs;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("select roomnumber from room where status=? AND roomtype=? AND bed=?");
             pst.setString(1,"Not Booked");
             pst.setString(2, comboroomtype.getItemAt(comboroomtype.getSelectedIndex()));
@@ -553,7 +558,7 @@ if(comboroomnumber.getItemCount()==0)
         ResultSet rs;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("select roomnumber from room where status=? AND roomtype=? AND bed=?");
             pst.setString(1,"Not Booked");
             pst.setString(2, comboroomtype.getItemAt(comboroomtype.getSelectedIndex()));
@@ -671,6 +676,10 @@ if(evt.getKeyCode()==KeyEvent.VK_ENTER)
       if(txtemail.getText().equals(""))
           lblemail.setText("");      
     }//GEN-LAST:event_txtemailKeyReleased
+
+    private void txtadharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtadharActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtadharActionPerformed
 
     /**
      * @param args the command line arguments

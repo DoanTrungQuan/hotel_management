@@ -1,5 +1,5 @@
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.ResultSetMetaData;
 import java.beans.Statement;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,7 +43,7 @@ public class CustomerDetailsBill extends javax.swing.JFrame {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("Select * from customer where status=?");
             pst.setString(1, "check out");
             rs = pst.executeQuery();
@@ -216,7 +216,7 @@ if(evt.getClickCount()==2){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("Select * from customer where status=? AND outdate=?");
             pst.setString(1, "check out");
             pst.setString(2,txtdate.getText());

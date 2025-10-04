@@ -243,7 +243,7 @@ public class Signup extends javax.swing.JFrame {
     java.sql.Connection con=null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
            // st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             pst=con.prepareStatement("select * from signup where email=?");
             pst.setString(1, txtemail.getText());
@@ -255,7 +255,7 @@ public class Signup extends javax.swing.JFrame {
             else{
            //      try {
             //Class.forName("com.mysql.cj.jdbc.Driver");
-            //con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            //con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("insert into signup(name,email,password,sq,answer)values(?,?,?,?,?)");
             pst.setString(1, txtname.getText());
             pst.setString(2, txtemail.getText().toLowerCase());
@@ -323,7 +323,7 @@ if(evt.getKeyCode()==KeyEvent.VK_ENTER){
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             pst=con.prepareStatement("select * from signup where email=?");
             pst.setString(1, txtemail.getText());
@@ -335,7 +335,7 @@ if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             else{
                  try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("insert into signup(name,email,password,sq,answer)values(?,?,?,?,?)");
             pst.setString(1, txtname.getText());
             pst.setString(2, txtemail.getText().toLowerCase());

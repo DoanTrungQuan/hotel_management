@@ -1,5 +1,5 @@
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,15 +10,6 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-/**
- *
- * @author Sudhir Kushwaha
- */
 public class Admin extends javax.swing.JFrame {
 
     /**
@@ -38,7 +29,7 @@ public void s(){
    
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("Select * from signup");
             rs=pst.executeQuery();
             ResultSetMetaData stData=(ResultSetMetaData) rs.getMetaData();
@@ -110,6 +101,12 @@ public void s(){
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 150, -1, -1));
+
+        txtemail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtemailActionPerformed(evt);
+            }
+        });
         getContentPane().add(txtemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 186, 40));
 
         jTable1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
@@ -188,7 +185,7 @@ s();        // TODO add your handling code here:
    
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("Select * from signup where email=?");
             pst.setString(1,txtemail.getText());
             rs=pst.executeQuery();
@@ -232,7 +229,7 @@ if(evt.getClickCount()==2){
             Connection con=null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("update signup set status=? where email=?");
             pst.setString(1, "approved");
             pst.setString(2,email);
@@ -252,7 +249,7 @@ if(evt.getClickCount()==2){
             Connection con=null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("update signup set status=? where email=?");
             pst.setString(1, "panding");
             pst.setString(2,email);
@@ -266,6 +263,10 @@ if(evt.getClickCount()==2){
     }
 }     
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtemailActionPerformed
 
     /**S
      * @param args the command line arguments

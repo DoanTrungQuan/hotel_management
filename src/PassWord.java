@@ -221,7 +221,7 @@ PreparedStatement pst;
     private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             //st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             pst=con.prepareStatement("select sq from signup where email=?");
             pst.setString(1, txtemail.getText());
@@ -255,7 +255,7 @@ PreparedStatement pst;
     else{
         try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        java.sql.Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+        java.sql.Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
         //st=conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
         pst=conn.prepareStatement("select * from signup where answer=? and email=?");
         pst.setString(1, txtans.getText());
@@ -264,7 +264,7 @@ PreparedStatement pst;
         if(rs.next()){
             try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("update signup set password=? where email=?");
             pst.setString(1, txtpassword.getText());
             pst.setString(2, txtemail.getText());
@@ -309,7 +309,7 @@ if(evt.getKeyCode()==KeyEvent.VK_ENTER){
     else{
         try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        java.sql.Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+        java.sql.Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
         st=conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
         pst=conn.prepareStatement("select * from signup where answer=?");
         pst.setString(1, txtans.getText());
@@ -319,7 +319,7 @@ if(evt.getKeyCode()==KeyEvent.VK_ENTER){
            //}
             try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("update signup set password=? where email=?");
             pst.setString(1, txtpassword.getText());
             pst.setString(2, txtemail.getText());
