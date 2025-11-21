@@ -52,7 +52,7 @@ public void s(){
             
             
         } catch (ClassNotFoundException | SQLException ex) {
-            //Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
+    ex.printStackTrace();
         }
         
 
@@ -303,7 +303,6 @@ if(evt.getClickCount()==2){
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -313,5 +312,4 @@ if(evt.getClickCount()==2){
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtemail;
-    // End of variables declaration//GEN-END:variables
 }

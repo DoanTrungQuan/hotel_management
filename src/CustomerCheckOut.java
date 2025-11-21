@@ -29,7 +29,7 @@ double pri;
      */
     public CustomerCheckOut() {
         initComponents();
-        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd ");
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         Date d = new Date();
         txtoutdate.setText(date.format(d));
 
@@ -318,25 +318,32 @@ double pri;
             ZoneId z=ZoneId.of("Asia/Colombo");
             LocalDate todays=LocalDate.now(z);
             String s1=todays.toString();
-            SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd");
-            String f1=rs.getString("date");
+            // Fix: Database stores dates as yyyy/MM/dd but we need to parse it correctly
+            SimpleDateFormat sim=new SimpleDateFormat("yyyy/MM/dd");
+            String f1=rs.getString("date").trim();
             String f2=s1;
             try{
                 Date d1=sim.parse(f1);
-                Date d2=sim.parse(f2);
+                // Convert LocalDate to Date for comparison
+                Date d2=java.sql.Date.valueOf(todays);
                 long diff=d2.getTime()-d1.getTime();
                 int days=(int)(diff/(1000*24*60*60));
-                if(days==0)
-                    txtamount.setText("1");
-                else
-                    txtdays.setText(String.valueOf(days));
+                if(days<=0)
+                    days=1; // Minimum 1 day charge
+                txtdays.setText(String.valueOf(days));
                 double p=Double.parseDouble(rs.getString("price"));
                 double pri=days*p;
-                if(days==0)
-                    txtamount.setText(String.valueOf(p));
-                else
-                    txtamount.setText(String.valueOf(pri));
+                txtamount.setText(String.valueOf(pri));
             }catch(Exception e){
+                e.printStackTrace();
+                // Fallback: set minimum 1 day charge
+                try {
+                    double p=Double.parseDouble(rs.getString("price"));
+                    txtdays.setText("1");
+                    txtamount.setText(String.valueOf(p));
+                } catch(Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error calculating amount: " + ex.getMessage());
+                }
             }  
         } catch (ClassNotFoundException | SQLException ex) {
            txtdays.setText("");
@@ -378,25 +385,34 @@ double pri;
             ZoneId z=ZoneId.of("Asia/Colombo");
             LocalDate todays=LocalDate.now(z);
             String s1=todays.toString();
-            SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd");
-            String f1=RecordTable.getValueAt(SelectedRows, 3).toString();
+            // Fix: Database stores dates as yyyy/MM/dd
+            SimpleDateFormat sim=new SimpleDateFormat("yyyy/MM/dd");
+            String f1=RecordTable.getValueAt(SelectedRows, 3).toString().trim();
             String f2=s1;
             try{
                 Date d1=sim.parse(f1);
-                Date d2=sim.parse(f2);
+                // Convert LocalDate to Date for comparison
+                Date d2=java.sql.Date.valueOf(todays);
                 long diff=d2.getTime()-d1.getTime();
-                 days=(int)(diff/(1000*24*60*60));
-                if(days==0)
-                    txtdays.setText("1");
-                else
-                    txtdays.setText(String.valueOf(days));
+                days=(int)(diff/(1000*24*60*60));
+                if(days<=0)
+                    days=1; // Minimum 1 day charge
+                txtdays.setText(String.valueOf(days));
                 double p=Double.parseDouble(RecordTable.getValueAt(SelectedRows,11).toString());
-                 pri=days*p;
-                if(days==0)
-                    txtamount.setText(String.valueOf(p));
-                else
-                    txtamount.setText(String.valueOf(pri));
+                pri=days*p;
+                txtamount.setText(String.valueOf(pri));
             }catch(Exception e){
+                e.printStackTrace();
+                // Fallback: set minimum 1 day charge
+                try {
+                    double p=Double.parseDouble(RecordTable.getValueAt(SelectedRows,11).toString());
+                    days=1;
+                    pri=p;
+                    txtdays.setText("1");
+                    txtamount.setText(String.valueOf(p));
+                } catch(Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error calculating amount: " + ex.getMessage());
+                }
             }
         
         
@@ -405,42 +421,56 @@ double pri;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (txtname.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please Enter Room Number And Search it,Then Check Out Customer");
+        } else if (txtamount.getText().equals("") || txtdays.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Please calculate the amount first by searching for the customer");
         } else {
             try {
                 PreparedStatement pst = null;
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
-                pst = con.prepareStatement("update customer set status=? where roomnumber=?");
+                
+                // Generate billid if not exists
+                String billid = "BILL" + System.currentTimeMillis();
+                
+                // Update customer status and billing information
+                pst = con.prepareStatement("update customer set status=?, amount=?, outdate=?, days=?, billid=? where roomnumber=? AND status=?");
                 pst.setString(1, "check out");
-                pst.setString(2, txtroomnumber.getText());
-                pst.executeUpdate();
-                pst = con.prepareStatement("update customer set amount=?,outdate=?,days=? where roomnumber=? AND date=?");
-                pst.setString(1, txtamount.getText());
-                pst.setString(2, txtoutdate.getText());
-                pst.setString(3, txtdays.getText());
-                pst.setString(4, txtroomnumber.getText());
-                pst.setString(5, txtdate.getText());
-                pst.executeUpdate();
+                pst.setString(2, txtamount.getText());
+                pst.setString(3, txtoutdate.getText().trim());
+                pst.setString(4, txtdays.getText());
+                pst.setString(5, billid);
+                pst.setString(6, txtroomnumber.getText().trim());
+                pst.setString(7, "NULL");
+                int customerUpdated = pst.executeUpdate();
+                
+                // Update room status to "Not Booked"
                 pst = con.prepareStatement("update room set status=? where roomnumber=?");
                 pst.setString(1, "Not Booked");
-                pst.setString(2, txtroomnumber.getText());
-                pst.executeUpdate();
-                //JOptionPane.showMessageDialog(this,"Check Out Successfully\n Goto to Cutomer Bill Details menu and Print Bill");
-                int yes=JOptionPane.showConfirmDialog(this,"Check out Successfully.\nDo you want to see & print bill?","Check outed",JOptionPane.YES_NO_OPTION);
-                if(JOptionPane.YES_OPTION==yes)
-                    new CustomerDetailsBill().setVisible(true);
-                else{
-                s();
-                txtname.setText("");
-                txtemail.setText("");
-                txtmobile.setText("");
-                txtdate.setText("");
-                txtprice.setText("");
-                txtdays.setText("");
-                txtamount.setText("");
-                txtroomnumber.setText("");
-                        }
+                pst.setString(2, txtroomnumber.getText().trim());
+                int roomUpdated = pst.executeUpdate();
+                
+                if (customerUpdated > 0 && roomUpdated > 0) {
+                    //JOptionPane.showMessageDialog(this,"Check Out Successfully\n Goto to Cutomer Bill Details menu and Print Bill");
+                    int yes=JOptionPane.showConfirmDialog(this,"Check out Successfully.\nDo you want to see & print bill?","Check outed",JOptionPane.YES_NO_OPTION);
+                    if(JOptionPane.YES_OPTION==yes)
+                        new CustomerDetailsBill().setVisible(true);
+                    else{
+                        s();
+                        txtname.setText("");
+                        txtemail.setText("");
+                        txtmobile.setText("");
+                        txtdate.setText("");
+                        txtprice.setText("");
+                        txtdays.setText("");
+                        txtamount.setText("");
+                        txtroomnumber.setText("");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error: Could not update customer or room status. Please check the room number.");
+                }
             } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error during checkout: " + e.getMessage());
             }
 
         }

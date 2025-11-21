@@ -60,7 +60,7 @@ public class GenerateBill extends javax.swing.JFrame {
         ResultSet rs;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","Sudhir@123");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst=con.prepareStatement("select * from customer where billid=?");
             pst.setString(1,id);
             rs=pst.executeQuery();
