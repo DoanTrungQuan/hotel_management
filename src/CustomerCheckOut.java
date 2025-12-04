@@ -330,17 +330,31 @@ double pri;
                 int days=(int)(diff/(1000*24*60*60));
                 if(days<=0)
                     days=1; // Minimum 1 day charge
-                txtdays.setText(String.valueOf(days));
+                    txtdays.setText(String.valueOf(days));
                 double p=Double.parseDouble(rs.getString("price"));
-                double pri=days*p;
-                txtamount.setText(String.valueOf(pri));
+                // Validate price: must be positive
+                if(p <= 0){
+                    JOptionPane.showMessageDialog(this, "Error: Room price must be greater than zero. Please check room data.");
+                    txtdays.setText("");
+                    txtamount.setText("");
+                } else {
+                    double pri=days*p;
+                    txtamount.setText(String.valueOf(pri));
+                }
             }catch(Exception e){
                 e.printStackTrace();
                 // Fallback: set minimum 1 day charge
                 try {
                     double p=Double.parseDouble(rs.getString("price"));
-                    txtdays.setText("1");
-                    txtamount.setText(String.valueOf(p));
+                    // Validate price: must be positive
+                    if(p <= 0){
+                        JOptionPane.showMessageDialog(this, "Error: Room price must be greater than zero. Please check room data.");
+                        txtdays.setText("");
+                        txtamount.setText("");
+                    } else {
+                        txtdays.setText("1");
+                        txtamount.setText(String.valueOf(p));
+                    }
                 } catch(Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error calculating amount: " + ex.getMessage());
                 }
@@ -394,22 +408,36 @@ double pri;
                 // Convert LocalDate to Date for comparison
                 Date d2=java.sql.Date.valueOf(todays);
                 long diff=d2.getTime()-d1.getTime();
-                days=(int)(diff/(1000*24*60*60));
+                 days=(int)(diff/(1000*24*60*60));
                 if(days<=0)
                     days=1; // Minimum 1 day charge
-                txtdays.setText(String.valueOf(days));
+                    txtdays.setText(String.valueOf(days));
                 double p=Double.parseDouble(RecordTable.getValueAt(SelectedRows,11).toString());
-                pri=days*p;
-                txtamount.setText(String.valueOf(pri));
+                // Validate price: must be positive
+                if(p <= 0){
+                    JOptionPane.showMessageDialog(this, "Error: Room price must be greater than zero. Please check room data.");
+                    txtdays.setText("");
+                    txtamount.setText("");
+                } else {
+                    pri=days*p;
+                    txtamount.setText(String.valueOf(pri));
+                }
             }catch(Exception e){
                 e.printStackTrace();
                 // Fallback: set minimum 1 day charge
                 try {
                     double p=Double.parseDouble(RecordTable.getValueAt(SelectedRows,11).toString());
-                    days=1;
-                    pri=p;
-                    txtdays.setText("1");
-                    txtamount.setText(String.valueOf(p));
+                    // Validate price: must be positive
+                    if(p <= 0){
+                        JOptionPane.showMessageDialog(this, "Error: Room price must be greater than zero. Please check room data.");
+                        txtdays.setText("");
+                        txtamount.setText("");
+                    } else {
+                        days=1;
+                        pri=p;
+                        txtdays.setText("1");
+                        txtamount.setText(String.valueOf(p));
+                    }
                 } catch(Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error calculating amount: " + ex.getMessage());
                 }
@@ -450,24 +478,24 @@ double pri;
                 int roomUpdated = pst.executeUpdate();
                 
                 if (customerUpdated > 0 && roomUpdated > 0) {
-                    //JOptionPane.showMessageDialog(this,"Check Out Successfully\n Goto to Cutomer Bill Details menu and Print Bill");
-                    int yes=JOptionPane.showConfirmDialog(this,"Check out Successfully.\nDo you want to see & print bill?","Check outed",JOptionPane.YES_NO_OPTION);
-                    if(JOptionPane.YES_OPTION==yes)
-                        new CustomerDetailsBill().setVisible(true);
-                    else{
-                        s();
-                        txtname.setText("");
-                        txtemail.setText("");
-                        txtmobile.setText("");
-                        txtdate.setText("");
-                        txtprice.setText("");
-                        txtdays.setText("");
-                        txtamount.setText("");
-                        txtroomnumber.setText("");
+                //JOptionPane.showMessageDialog(this,"Check Out Successfully\n Goto to Cutomer Bill Details menu and Print Bill");
+                int yes=JOptionPane.showConfirmDialog(this,"Check out Successfully.\nDo you want to see & print bill?","Check outed",JOptionPane.YES_NO_OPTION);
+                if(JOptionPane.YES_OPTION==yes)
+                    new CustomerDetailsBill().setVisible(true);
+                else{
+                s();
+                txtname.setText("");
+                txtemail.setText("");
+                txtmobile.setText("");
+                txtdate.setText("");
+                txtprice.setText("");
+                txtdays.setText("");
+                txtamount.setText("");
+                txtroomnumber.setText("");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Error: Could not update customer or room status. Please check the room number.");
-                }
+                        }
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error during checkout: " + e.getMessage());

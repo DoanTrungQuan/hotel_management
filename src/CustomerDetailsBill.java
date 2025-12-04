@@ -22,6 +22,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CustomerDetailsBill extends javax.swing.JFrame {
     static String idd;
+    private javax.swing.JTextField txtbillid;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton jButton4;
     /**
      * Creates new form CustomerDetailsBill
      */
@@ -141,6 +144,29 @@ public class CustomerDetailsBill extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 90, 40));
 
+        jLabel5 = new javax.swing.JLabel();
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Search by Bill ID ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 200, -1));
+
+        txtbillid = new javax.swing.JTextField();
+        txtbillid.setFont(new java.awt.Font("Segoe UI Light", 1, 18)); // NOI18N
+        txtbillid.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        getContentPane().add(txtbillid, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 140, 40));
+
+        jButton4 = new javax.swing.JButton();
+        jButton4.setBackground(new java.awt.Color(153, 0, 0));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(240, 240, 240));
+        jButton4.setText("Search");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 90, 40));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
@@ -215,11 +241,17 @@ if(evt.getClickCount()==2){
         int q, i;
 
         try {
+            // Convert date format from yyyy-MM-dd to yyyy/MM/dd (database format)
+            String searchDate = txtdate.getText().trim();
+            if(searchDate.contains("-")) {
+                searchDate = searchDate.replace("-", "/");
+            }
+            
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
             pst = con.prepareStatement("Select * from customer where status=? AND outdate=?");
             pst.setString(1, "check out");
-            pst.setString(2,txtdate.getText());
+            pst.setString(2, searchDate);
             rs = pst.executeQuery();
             ResultSetMetaData stData = (ResultSetMetaData) rs.getMetaData();
             q = stData.getColumnCount();
@@ -257,6 +289,62 @@ if(evt.getClickCount()==2){
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 s();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(txtbillid.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(this, "Please enter Bill ID");
+            txtbillid.requestFocus();
+            return;
+        }
+        
+        Statement st = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        java.sql.Connection con = null;
+        int q, i;
+        boolean found = false;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
+            pst = con.prepareStatement("Select * from customer where status=? AND billid=?");
+            pst.setString(1, "check out");
+            pst.setString(2, txtbillid.getText().trim());
+            rs = pst.executeQuery();
+            ResultSetMetaData stData = (ResultSetMetaData) rs.getMetaData();
+            q = stData.getColumnCount();
+            DefaultTableModel RecordTable = (DefaultTableModel) jTable1.getModel();
+            RecordTable.setRowCount(0);
+            while (rs.next()) {
+                found = true;
+                Vector columnData = new Vector();
+                for (i = 1; i <= q; i++) {
+                    columnData.add(rs.getString("billid"));
+                    columnData.add(rs.getString("roomnumber"));
+                    columnData.add(rs.getString("name"));
+                    columnData.add(rs.getString("mobile"));
+                    columnData.add(rs.getString("nationality"));
+                    columnData.add(rs.getString("gender"));
+                    columnData.add(rs.getString("email"));
+                    columnData.add(rs.getString("id"));
+                    columnData.add(rs.getString("address"));
+                    columnData.add(rs.getString("date"));
+                    columnData.add(rs.getString("outdate"));
+                    columnData.add(rs.getString("bed"));
+                    columnData.add(rs.getString("roomtype"));
+                    columnData.add(rs.getString("price"));
+                    columnData.add(rs.getString("days"));
+                    columnData.add(rs.getString("amount"));
+                }
+                RecordTable.addRow(columnData);
+            }
+            if(!found){
+                JOptionPane.showMessageDialog(this, "Record Not Found.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Record Not Found.");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments

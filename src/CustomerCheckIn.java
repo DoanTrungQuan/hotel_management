@@ -450,9 +450,20 @@ if(comboroomnumber.getItemCount()==0)
     }
     else{
         try{
-        long l=Long.parseLong(txtmob.getText());
-        l=Long.parseLong(txtadhar.getText());
+        long mobNumber=Long.parseLong(txtmob.getText());
+        long adharNumber=Long.parseLong(txtadhar.getText());
         
+        // Validate mobile number: must be positive and start with non-zero (for 10 digits)
+        if(mobNumber <= 0 || txtmob.getText().startsWith("0") || txtmob.getText().startsWith("-")){
+            JOptionPane.showMessageDialog(this, "Mobile Number Should be 10 Digit and positive.");
+            txtmob.requestFocus();
+        }
+        // Validate adhar number: must be positive and start with non-zero (for 12 digits)
+        else if(adharNumber <= 0 || txtadhar.getText().startsWith("0") || txtadhar.getText().startsWith("-")){
+            JOptionPane.showMessageDialog(this, "Adhar Number Should be 12 Digit and positive.");
+            txtadhar.requestFocus();
+        }
+        else{
         try {
             PreparedStatement pst;
             ResultSet rs;
@@ -505,6 +516,7 @@ if(comboroomnumber.getItemCount()==0)
             if(comboroomnumber.getItemCount()==0)
                 txtprice.setText("");
             }catch(HeadlessException | ClassNotFoundException | SQLException e){
+            }
             }
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(this,"Either Mobile Number or Adhar Number Not valied");

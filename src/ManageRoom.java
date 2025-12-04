@@ -236,7 +236,11 @@ dispose();
             else{
                 try{
                     double pric=Double.parseDouble(txtprice.getText());
-                       
+                    if(pric <= 0){
+                        JOptionPane.showMessageDialog(this,"Price must be greater than zero");
+                        txtprice.requestFocus();
+                    }
+                    else{
                         try {
                         Class.forName("com.mysql.cj.jdbc.Driver");
                         con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","DoanTrungQuan0912@");
@@ -253,6 +257,7 @@ dispose();
                         txtno.setText("");
                   
                 } catch (ClassNotFoundException | SQLException ex) {}
+                    }
                 }catch(Exception e){
                     JOptionPane.showMessageDialog(this,"Price is not valied");
                     }
@@ -320,13 +325,20 @@ dispose();
         if(txtprice.getText().equals(""))
             JOptionPane.showMessageDialog(this, "All Field id Required");
         else{
+                try{
+                    double pric=Double.parseDouble(txtprice.getText());
+                    if(pric <= 0){
+                        JOptionPane.showMessageDialog(this,"Price must be greater than zero");
+                        txtprice.requestFocus();
+                    }
+        else{
                 String type=jComboBox1.getItemAt(jComboBox1.getSelectedIndex());
                 String bed=jComboBox2.getItemAt(jComboBox2.getSelectedIndex());
                 PreparedStatement pst;
                 java.sql.Connection con;
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "Sudhir@123");
+                            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "DoanTrungQuan0912@");
                     //pst=con.prepareStatement("update room set price="+txtprice.getText()+","+"roomtype="+type+" where roomnumber="+s2);
                     pst=con.prepareStatement("update room set price=?,roomtype=?,bed=? where roomnumber=?");
                     pst.setString(1,txtprice.getText() );
@@ -341,6 +353,11 @@ dispose();
                   
                 }catch(Exception e){
                     
+                        }
+                    }
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(this,"Price is not valied");
+                    txtprice.requestFocus();
                 }
                 }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed

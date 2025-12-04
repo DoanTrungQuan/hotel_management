@@ -193,7 +193,9 @@ s();        // TODO add your handling code here:
             q=stData.getColumnCount();
             DefaultTableModel RecordTable= (DefaultTableModel) jTable1.getModel();
             RecordTable.setRowCount(0);
+            boolean found = false;
             while(rs.next()){
+                found = true;
                 Vector columnData=new Vector();
                 for(i=1;i<=q;i++){
                     columnData.add(rs.getString("name"));
@@ -206,7 +208,9 @@ s();        // TODO add your handling code here:
                 }
                 RecordTable.addRow(columnData);
             }
-            
+            if(!found){
+                JOptionPane.showMessageDialog(this,"Record Not Found");
+            }
             
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this,"Record Not Found"); //Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
